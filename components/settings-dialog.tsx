@@ -45,6 +45,7 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar";
 import AuditLogPage from "./audit-log";
+import Notifications from "./notfications";
 
 const data = {
   nav: [
@@ -62,7 +63,7 @@ export function SettingsDialog() {
   const renderContent = () => {
     switch (selectedMenu) {
       case "notifications":
-        return <div>Notification Settings</div>;
+        return <Notifications />;
       case "connected-accounts":
         return <div>Connected Accounts Settings</div>;
       case "account":
