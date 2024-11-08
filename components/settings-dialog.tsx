@@ -45,6 +45,9 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar";
 import AuditLogPage from "./audit-log";
+import  Account  from "./account";
+import ConnectedAccount from "./connected-account";
+import Notifications from "./notifications";
 
 const data = {
   nav: [
@@ -62,11 +65,11 @@ export function SettingsDialog() {
   const renderContent = () => {
     switch (selectedMenu) {
       case "notifications":
-        return <div>Notification Settings</div>;
+        return <Notifications />;
       case "connected-accounts":
-        return <div>Connected Accounts Settings</div>;
+        return <ConnectedAccount/>;
       case "account":
-        return <div>Account Settings</div>;
+        return <Account />;
       case "audit-log":
         return <AuditLogPage />;
       default:
@@ -108,7 +111,7 @@ export function SettingsDialog() {
               </SidebarGroup>
             </SidebarContent>
           </Sidebar>
-          <div className="p-4">{renderContent()}</div>
+          <div className="w-full p-4 max-w-3xl">{renderContent()}</div>
         </SidebarProvider>
       </DialogContent>
     </Dialog>
