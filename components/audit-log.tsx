@@ -11,6 +11,7 @@ import {
   Settings,
   Users,
 } from "lucide-react";
+import { saveAs } from "file-saver";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -118,6 +119,44 @@ const auditLogs = [
 ];
 
 export default function AuditLogPage() {
+  const [selectedDateFilter, setSelectedDateFilter] = React.useState("All");
+  const [selectedUserFilter, setSelectedUserFilter] =
+    React.useState("All users");
+  const [selectedEventFilter, setSelectedEventFilter] =
+    React.useState("All events");
+
+  const filteredLogs = auditLogs.filter((log) => {
+    const matchesDate =
+      selectedDateFilter === "All" ||
+      log.timestamp.includes(selectedDateFilter);
+    const matchesUser =
+      selectedUserFilter === "All users" ||
+      log.user.name.includes(selectedUserFilter);
+    const matchesEvent =
+      selectedEventFilter === "All events" ||
+      log.action === selectedEventFilter;
+
+    return matchesDate && matchesUser && matchesEvent;
+  });
+
+  const handleExportCSV = () => {
+    const csvContent = [
+      ["User Name", "Email", "Action", "Target", "Timestamp"].join(","),
+      ...filteredLogs.map((log) =>
+        [
+          log.user.name,
+          log.user.email,
+          log.action,
+          log.target,
+          log.timestamp,
+        ].join(",")
+      ),
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    saveAs(blob, "audit_log.csv");
+  };
+
   return (
     <main className="flex h-[480px] flex-1 flex-col overflow-hidden p-2">
       <Header text='Messages & media' />
@@ -131,9 +170,24 @@ export default function AuditLogPage() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
-              <DropdownMenuItem>Last 24 hours</DropdownMenuItem>
-              <DropdownMenuItem>Last 7 days</DropdownMenuItem>
-              <DropdownMenuItem>Last 30 days</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSelectedDateFilter("All")}>
+                All dates
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setSelectedDateFilter("Last 24 hours")}
+              >
+                Last 24 hours
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setSelectedDateFilter("Last 7 days")}
+              >
+                Last 7 days
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setSelectedDateFilter("Last 30 days")}
+              >
+                Last 30 days
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           <DropdownMenu>
@@ -144,9 +198,22 @@ export default function AuditLogPage() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
-              <DropdownMenuItem>All users</DropdownMenuItem>
-              <DropdownMenuItem>Active users</DropdownMenuItem>
-              <DropdownMenuItem>Inactive users</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setSelectedUserFilter("All users")}
+              >
+                All users
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setSelectedUserFilter("Albert Flores")}
+              >
+                Albert Flores
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setSelectedUserFilter("Kristin Watson")}
+              >
+                Kristin Watson
+              </DropdownMenuItem>
+              {/* Add more user filter options as needed */}
             </DropdownMenuContent>
           </DropdownMenu>
           <DropdownMenu>
@@ -157,14 +224,31 @@ export default function AuditLogPage() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
-              <DropdownMenuItem>All events</DropdownMenuItem>
-              <DropdownMenuItem>Edits</DropdownMenuItem>
-              <DropdownMenuItem>Views</DropdownMenuItem>
-              <DropdownMenuItem>Downloads</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setSelectedEventFilter("All events")}
+              >
+                All events
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setSelectedEventFilter("Edited")}
+              >
+                Edits
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setSelectedEventFilter("Viewed")}
+              >
+                Views
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setSelectedEventFilter("Downloaded")}
+              >
+                Downloads
+              </DropdownMenuItem>
+              {/* Add more event filter options as needed */}
             </DropdownMenuContent>
           </DropdownMenu>
           <div className="ml-auto">
-            <Button size="sm">
+            <Button size="sm" onClick={handleExportCSV}>
               <Download className="mr-2 h-4 w-4" />
               Export
             </Button>
@@ -180,7 +264,7 @@ export default function AuditLogPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {auditLogs.map((log) => (
+              {filteredLogs.map((log) => (
                 <TableRow key={log.id}>
                   <TableCell>
                     <div className="flex items-center gap-2">
