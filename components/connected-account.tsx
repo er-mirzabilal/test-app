@@ -53,7 +53,6 @@ export default function ConnectedAccount() {
             <div className="w-full max-w-2xl bg-background p-6 flex flex-col h-[600px]">
                 <h2 className="text-xl font-semibold">Integrations</h2>
                 <div className="h-px bg-border my-6" />
-
                 <div className="flex items-center justify-between mb-6">
                     <div>
                         <h3 className="font-medium mb-1">Restrict members from installing integrations</h3>

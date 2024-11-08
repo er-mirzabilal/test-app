@@ -31,7 +31,7 @@ export default function Component() {
         <>
         <Header text="Account" />
         <div className="w-full max-w-2xl bg-background p-6">
-        <h2 className="text-xl font-semibold mb-4">My Account</h2>
+        <h2 className="text-xl font-semibold mb-6">My Account</h2>
         <div className="h-px bg-border mb-6"></div>
             <div className="flex items-start gap-6">
                 <div className="relative group" onClick={handleImageClick}>

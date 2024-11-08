@@ -3,29 +3,11 @@
 import * as React from "react";
 import {
   Bell,
-  Check,
-  Globe,
-  Home,
-  Keyboard,
   Link,
-  Lock,
-  Menu,
-  MessageCircle,
-  Paintbrush,
-  Settings,
-  Video,
   SquareUserRound,
   ScrollText,
 } from "lucide-react";
 
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -45,29 +27,29 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar";
 import AuditLogPage from "./audit-log";
-import  Account  from "./account";
+import Account from "./account";
 import ConnectedAccount from "./connected-account";
-import Notifications from "./notifications";
+import Notifications from "./notfications";
 
 const data = {
   nav: [
-    { name: "Notifications", icon: Bell, slug: "notifications" },
-    { name: "Connected accounts", icon: Link, slug: "connected-accounts" },
     { name: "Account", icon: SquareUserRound, slug: "account" },
+    { name: "Connected accounts", icon: Link, slug: "connected-accounts" },
+    { name: "Notifications", icon: Bell, slug: "notifications" },
     { name: "Audit log", icon: ScrollText, slug: "audit-log" },
   ],
 };
 
 export function SettingsDialog() {
   const [open, setOpen] = React.useState(true);
-  const [selectedMenu, setSelectedMenu] = React.useState("notifications");
+  const [selectedMenu, setSelectedMenu] = React.useState("account");
 
   const renderContent = () => {
     switch (selectedMenu) {
       case "notifications":
         return <Notifications />;
       case "connected-accounts":
-        return <ConnectedAccount/>;
+        return <ConnectedAccount />;
       case "account":
         return <Account />;
       case "audit-log":

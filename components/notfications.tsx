@@ -5,6 +5,7 @@ import * as React from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
+import { Header } from "./custom-breadcrumb"
 
 // Mock hook to fetch notifications data
 const useNotifications = () => {
@@ -49,7 +50,7 @@ export default function Component() {
   // Function to handle toggling and API call
   const handleToggle = async (id: string) => {
     // Toggle state locally
-    setNotificationStates((prev) => ({
+    setNotificationStates((prev: any) => ({
       ...prev,
       [id]: !prev[id],
     }));
@@ -65,12 +66,13 @@ export default function Component() {
   };
 
   return (
-    <Card className="border-0 shadow-none">
-      <CardHeader>
-       
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="space-y-4">
+    <>
+      <Header text="Notifications" />
+      <div className="w-full max-w-2xl bg-background p-6">
+        <h2 className="text-xl font-semibold mb-6">Notifications</h2>
+        <div className="h-px bg-border mb-6"></div>
+
+        <div className="space-y-6">
           {notificationsData.map((notification) => (
             <div key={notification.id} className="flex items-start justify-between space-x-4">
               <div className="space-y-1">
@@ -79,16 +81,19 @@ export default function Component() {
                   {notification.description}
                 </CardDescription>
               </div>
-              <Switch
-                id={notification.id}
-                checked={notificationStates[notification.id as keyof typeof notificationStates]}
-                onCheckedChange={() => handleToggle(notification.id)}
-                aria-label={`Toggle ${notification.title.toLowerCase()}`}
-              />
+              <div className="self-center">
+                <Switch
+                  id={notification.id}
+                  checked={notificationStates[notification.id as keyof typeof notificationStates]}
+                  onCheckedChange={() => handleToggle(notification.id)}
+                  aria-label={`Toggle ${notification.title.toLowerCase()}`}
+                />
+              </div>
             </div>
           ))}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </>
+
   );
 }
